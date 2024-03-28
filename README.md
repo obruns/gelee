@@ -308,6 +308,12 @@ The idea here would be to use local DNS spoofing to make the system
 download and flash a different recovery filesystem and kernel image that
 suites our needs.
 
+### Attacking via self-signed certificates
+
+I strongly doubt this will work but it is worth a try. Use OpenSSL's
+`x509`, `gencrl`, `rsa`, ... subcommands as needed to create a (self-
+signed) server certificate and see what happens.
+
 ## Other projects and references
 
 * [1](https://github.com/matthsc/gigaset-elements-api)
