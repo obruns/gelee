@@ -266,6 +266,10 @@ There appear to be client certificates in use, too. My hope is that once
 I get my fingers on the client certificate (key pair) I can use
 Wireshark to decrypt that TCP session - [see](https://packetpushers.net/blog/using-wireshark-to-decode-ssltls-packets/).
 
+In summary: Without being able to manipulate the list of trusted CA
+certificates on the basestation, I am (of course!) unable to decrypt the
+traffic on-the-fly with `mitmproxy`.
+
 ### Creating backups
 
 * `src/init_rootfs/usr/bin/sysdump_create.sh`
@@ -340,3 +344,10 @@ signed) server certificate and see what happens.
 * [blog](https://austinmarton.wordpress.com/2011/09/14/sending-raw-ethernet-packets-from-a-specific-interface-in-c-on-linux/)
 * [... via](https://old.reddit.com/r/C_Programming/comments/gygbs6/how_to_send_raw_bits_over_an_ethernet_interface/)
 * [Using Wireshark to Decode SSL/TLS Packets](https://packetpushers.net/blog/using-wireshark-to-decode-ssltls-packets/)
+* [ssldump](https://github.com/adulau/ssldump/)
+* [Capture, Analyze and Debug HTTPS traffic with MITMProxy](https://www.youtube.com/watch?v=7BXsaU42yok)
+* [Read and Manipulate Network Traffic on Android with mitmproxy](https://media.ccc.de/v/camp2023-57313-read_and_manipulate_network_traffic_on_android_with_mitmproxy)
+* [Deploying TLS 1.3: the great, the good and the bad](https://media.ccc.de/v/33c3-8348-deploying_tls_1_3_the_great_the_good_and_the_bad)
+* [The Rocky Road to TLS 1.3 and better Internet Encryption](https://media.ccc.de/v/35c3-9607-the_rocky_road_to_tls_1_3_and_better_internet_encryption)
+* [goto fail; exploring two decades of transport layer insecurity - Chapter "Downgrade Attack"](https://media.ccc.de/v/32c3-7438-goto_fail#t=2115)
+* [7 Smart-Home-Starter-Kits im Sicherheits-Test](https://www.av-test.org/fileadmin/pdf/publications/avtest_2014-04_smart_home_deutsch.pdf#25)
