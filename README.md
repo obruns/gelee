@@ -250,6 +250,22 @@ gcc -Wall -Wextra -Wpedantic -o sendRawEth -O2 sendRawEth.c
 for i in seq 1 50 ; do ./sendRawEth; done
 ```
 
+### Sniffing the traffic while using mitmproxy/mitmdump
+
+I have a couple of pcap-ng dumps from
+
+  * a "normal" boot sequence
+  * a boot sequence with the button pressed while connecting the power plug
+  * (TODO) a boot sequence while having `sendRawEth` running
+  * (TODO) a boot sequence followed by all sensors firing
+  * (TODO) with iptables `REDIRECT` to `mitmdump` active
+
+From looking at the packets, I am pleasantly surprised to see the connection
+being TLSv1.2-secured. After all, the CR16C isn't the most powerful CPU.
+There appear to be client certificates in use, too. My hope is that once
+I get my fingers on the client certificate (key pair) I can use
+Wireshark to decrypt that TCP session - [see](https://packetpushers.net/blog/using-wireshark-to-decode-ssltls-packets/).
+
 ### Creating backups
 
 * `src/init_rootfs/usr/bin/sysdump_create.sh`
@@ -317,3 +333,4 @@ suites our needs.
 * [alternative](https://gist.github.com/austinmarton/1922600)
 * [blog](https://austinmarton.wordpress.com/2011/09/14/sending-raw-ethernet-packets-from-a-specific-interface-in-c-on-linux/)
 * [... via](https://old.reddit.com/r/C_Programming/comments/gygbs6/how_to_send_raw_bits_over_an_ethernet_interface/)
+* [Using Wireshark to Decode SSL/TLS Packets](https://packetpushers.net/blog/using-wireshark-to-decode-ssltls-packets/)
