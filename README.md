@@ -241,6 +241,15 @@ There are a couple noteworthy snippets here:
 vim `rg --files-with-matches -i system_locked`
 ```
 
+Here is a utility to [craft arbitrary ethernet frames](https://gist.github.com/lethean/5fb0f493a1968939f2f7).
+I was not successful unlocking the system with a button press (while
+connecting the power plug) and sending the packets in fast succession:
+
+```sh
+gcc -Wall -Wextra -Wpedantic -o sendRawEth -O2 sendRawEth.c
+for i in seq 1 50 ; do ./sendRawEth; done
+```
+
 ### Creating backups
 
 * `src/init_rootfs/usr/bin/sysdump_create.sh`
@@ -304,3 +313,7 @@ suites our needs.
 * [dropbear](http://matt.ucc.asn.au/dropbear/dropbear.html)
 * [GitHub: dropbear](https://github.com/mkj/dropbear)
 * [Gigaset Elements WebApp](https://app.gigaset-elements.com/#/unauthorized)
+* [craft arbitrary ethernet frames](https://gist.github.com/lethean/5fb0f493a1968939f2f7)
+* [alternative](https://gist.github.com/austinmarton/1922600)
+* [blog](https://austinmarton.wordpress.com/2011/09/14/sending-raw-ethernet-packets-from-a-specific-interface-in-c-on-linux/)
+* [... via](https://old.reddit.com/r/C_Programming/comments/gygbs6/how_to_send_raw_bits_over_an_ethernet_interface/)
