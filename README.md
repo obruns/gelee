@@ -175,6 +175,14 @@ TOPICS="ulecontrol uleevent watchdog"
 Some of the files below `src/init_rootfs/usr/bin/` (see previous
 section) appear to be dedicated to sensor control based on DECT-ULE.
 
+### System Startup
+
+See `src/init_rootfs/etc/init.d/S40reef.sh` and other scripts.
+
+Inetd has telnet open if `system_locked=false`, see `./src/init_rootfs/etc/inetd.conf`.
+
+`./src/init_rootfs/etc/udhcpc.scr`
+
 ### Non-volatile storage?
 
 ```sh
@@ -184,12 +192,71 @@ nc -w 30 -p 5600 -l \> backup.file.name
 nc -w 2 $1 5600 < /mnt/data/nvs.bin
 ```
 
+### Bootargs
+
+```sh
+xxd ./src/dialog/cr16boot/image452.bin >| /tmp/x_production
+xxd ./src/dialog/cr16boot/image452_service.bin >| /tmp/x_service
+```
+
+```
+# from /tmp/x_service
+bootargs=noinitrd root=/dev/ram0 rw init=/linuxrc earlyprintk=serial console=ttyS0.bootcmd=bootm E8000.bootdelay=1.baudrate=115200.ethaddr=02:4e:ef:10:51:10.ipaddr=192.168.1.10.serverip=192.168.1.34.netmask=255.255.255.0.bootfile="vmlinuz".boot_from=flash.board_rev=RevB.1st_boot_pos=E8000.2nd_boot_pos=46F000.rec_boot_pos=20000.boot_from_image_no=1
+
+# from /tmp/x_production
+bootargs=noinitrd root=/dev/ram0 rw init=/linuxrc earlyprintk=serial console=ttyS0.bootcmd=bootm E8000.bootdelay=1.baudrate=115200.ethaddr=02:4e:ef:10:51:07.ipaddr=192.168.1.10.serverip=192.168.1.34.netmask=255.255.255.0.bootfile="vmlinuz".boot_from=flash.board_rev=RevB.1st_boot_pos=E8000.2nd_boot_pos=46F000.rec_boot_pos=20000.boot_from_image_no=1
+```
+
+### cr16boot bootloader configuration
+
+The build-time configuration of the bootloader is done in the following
+headers.
+
+`src/dialog/cr16boot/include/configs/config_sc14452reef.h`
+`src/dialog/cr16boot/include/configs/config_sc14452reef_32MB_service.h`
+
+There are a couple noteworthy snippets here:
+
+```cpp
+// How to craft this ethernet frame?
+// see src/dialog/cr16boot/common/unlock.c
+// and src/dialog/cr16boot/net/net.c
+#define CONFIG_SYSTEM_LOCK_DEF      "true"          ///< (true|false)default value. When "true", serial console is disabled. Can be unlocked by ethernet frame.
+
+// how can we toggle these?
+#define CONFIG_BOOT_FROM_IMAGE_NO       1                       ///< (env) which image should be booted first "1" or "2" or "R" (recovery)
+
+//= feature: longpress button detection
+#define CFG_BUTTON_DETECTION            1                       ///< (feat) (0|1) enable button driven behavior
+#if (CFG_BUTTON_DETECTION)
+/** (export) if defined CONFIG_FACTORY_RESET variable will be exported to linux environment but not stored in u-boot's env settings */
+        #define CONFIG_FACTORY_RESET            "factory_reset"
+        #define CFG_LONGPRESS_RESET                     (10*10) /// (feat) 10 seconds in 100ms ticks
+        #define CFG_LONGPRESS_RECOVERY          (30*10) /// (feat) 30 seconds in 100ms ticks
+        #define CFG_LONGPRESS_MAXIMUM_WAIT      (32*10) /// (feat) when button is pressed wait maximum 6 seconds
+#endif
+```
+
+```sh
+vim `rg --files-with-matches -i system_locked`
+```
+
+### Creating backups
+
+* `src/init_rootfs/usr/bin/sysdump_create.sh`
+
 ### Available tools
 
+* `ifplugd`, `ifup`, `ifdown`
+* `inetc`
 * `nc` (netcat client and server)
   - see `src/opensource/busybox/include/bbconfigopts.h`
+* `sha256sum`
+  - see `src/opensource/busybox/include/bbconfigopts.h`
+* `telnetd`
 * `tftp` (client only)
   - see `src/opensource/busybox/include/bbconfigopts.h`
+* `udhcpc`
 * `wget`
   - see `src/opensource/busybox/include/bbconfigopts.h`
 
