@@ -1,5 +1,9 @@
 # gelee - Gigaset Elements LifetimE Extension
 
+**Gigaset Elements GmbH shut down their services at around 10pm CET on
+Friday, March 29th, 2024. As things are looking now, we can only
+continue with what we can extract from our devices.**
+
 On March, 25th, 2024 - with a period for action of just four days -
 customers of Gigaset Elements got informed that the cloud service would
 be shut down on March 29th due to insolvency of the company.
@@ -7,6 +11,32 @@ be shut down on March 29th due to insolvency of the company.
 This project aims to collect as much data as possible while the service
 is still active and then - eventually - provide a service that can be
 self-hosted on-prem or in the cloud.
+
+## The missing bits
+
+* [This security report](https://www.av-test.org/fileadmin/pdf/publications/avtest_2014-04_smart_home_deutsch.pdf#25)
+  (in German) documents a bunch of findings in the Gigaset Elements
+  implementation. AFAICS, all of them had been fixed. In particular, I
+  was unable to downgrade from TLSv1.2 to a prior protocol version or
+  force the server to accept weak(er) ciphers.
+* The security report also mentions that update tarballs got downloaded
+  from a server unencrypted via HTTP. The Wireshark dump that I ran for
+  the final ~24h did not record connection attempts apart from the long-
+  lived connection to `api-bs.gigaset-elements.de:443` (78.137.103.62).
+* As a consequence, I did not know where to download update tarballs
+  from and thus could not fetch them. I also don't know the latest
+  firmware version. It has to be newer than 29 (mentioned in the
+  security report).
+
+## Accessing the hardware
+
+* The row of five large test pads (see [osmocom](https://osmocom.org/projects/misc-dect-hacks/wiki/Gigaset_Elements_Base))
+  is accessible from the outside as soon as you open the lid on the back.
+* To open the case and access the PCB you need to unhinge six plastic
+  hooks that firmly hold the front and the back. I was only able to do
+  this with a bunch of slotted screwdrivers and brute force at the
+  expense of scratching the plastic (of hardware that is bricked anyway
+  as things are looking right now).
 
 ## Tools
 
